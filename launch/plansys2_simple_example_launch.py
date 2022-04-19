@@ -25,7 +25,7 @@ from launch_ros.actions import Node
 
 def generate_launch_description():
     # Get the launch directory
-    example_dir = get_package_share_directory('plansys2-hospital-k-bots')
+    example_dir = get_package_share_directory('plansys2_hospital')
     namespace = LaunchConfiguration('namespace')
 
     declare_namespace_cmd = DeclareLaunchArgument(
@@ -44,8 +44,9 @@ def generate_launch_description():
           }.items())
 
     # Specify the actions
+    """
     move_directly_cmd = Node(
-        package='plansys2-hospital-k-bots',
+        package='plansys2_hospital',
         executable='move_directly_action_node',
         name='move_directly_action_node',
         namespace=namespace,
@@ -53,41 +54,42 @@ def generate_launch_description():
         parameters=[])
 
     move_through_cmd = Node(
-        package='plansys2-hospital-k-bots',
+        package='plansys2_hospital',
         executable='move_through_action_node',
         name='move_through_action_node',
         namespace=namespace,
         output='screen',
         parameters=[])
+    """
 
     drop_object_cmd = Node(
-        package='plansys2-hospital-k-bots',
-        executable='drop_object_node',
-        name='drop_object_node',
+        package='plansys2_hospital',
+        executable='drop_object_action_node',
+        name='drop_object_action_node',
         namespace=namespace,
         output='screen',
         parameters=[])   # Create the launch description and populate
 
     pick_object_cmd = Node(
-        package='plansys2-hospital-k-bots',
-        executable='pick_object_node',
-        name='pick_object_node',
+        package='plansys2_hospital',
+        executable='pick_object_action_node',
+        name='pick_object_action_node',
         namespace=namespace,
         output='screen',
         parameters=[])
 
     open_door_cmd = Node(
-        package='plansys2-hospital-k-bots',
-        executable='open_door_node',
-        name='open_door_node',
+        package='plansys2_hospital',
+        executable='open_door_action_node',
+        name='open_door_action_node',
         namespace=namespace,
         output='screen',
         parameters=[])
 
     close_door_cmd = Node(
-        package='plansys2-hospital-k-bots',
-        executable='close_door_node',
-        name='close_door_node',
+        package='plansys2_hospital',
+        executable='close_door_action_node',
+        name='close_door_action_node',
         namespace=namespace,
         output='screen',
         parameters=[])
@@ -99,8 +101,8 @@ def generate_launch_description():
     # Declare the launch options
     ld.add_action(plansys2_cmd)
 
-    ld.add_action(move_directly_cmd)
-    ld.add_action(move_through_cmd)
+    #ld.add_action(move_directly_cmd)
+    #ld.add_action(move_through_cmd)
     ld.add_action(drop_object_cmd)
     ld.add_action(pick_object_cmd)
     ld.add_action(open_door_cmd)

@@ -34,27 +34,31 @@ ament_target_dependencies(move_directly_action_node ${dependencies})
 add_executable(move_through_action_node src/move_through_action_node.cpp)
 ament_target_dependencies(move_through_action_node ${dependencies})
 
-add_executable(close_door_node src/close_door_node.cpp)
-ament_target_dependencies(close_door_node ${dependencies})
+add_executable(close_door_action_node src/close_door_action_node.cpp)
+ament_target_dependencies(close_door_action_node ${dependencies})
 
-add_executable(open_door_node src/open_door_node.cpp)
-ament_target_dependencies(open_door_node ${dependencies})
+add_executable(open_door_action_node src/open_door_action_node.cpp)
+ament_target_dependencies(open_door_action_node ${dependencies})
 
-add_executable(drop_object_node src/drop_object_node.cpp)
-ament_target_dependencies(drop_object_node ${dependencies})
+add_executable(drop_object_action_node src/drop_object_action_node.cpp)
+ament_target_dependencies(drop_object_action_node ${dependencies})
 
-add_executable(pick_object_node src/pick_node.cpp)
-ament_target_dependencies(pick_object_node ${dependencies})
+add_executable(pick_object_action_node src/pick_object_action_node.cpp)
+ament_target_dependencies(pick_object_action_node ${dependencies})
+
+add_executable(patrolling_controller_node src/patrolling_controller_node.cpp)
+ament_target_dependencies(patrolling_controller_node ${dependencies})
 
 install(DIRECTORY launch pddl params DESTINATION share/${PROJECT_NAME})
 
 install(TARGETS
   move_directly_action_node
   move_through_action_node
-  close_door_node
-  open_door_node
-  drop_object_node
-  pick_object_node
+  close_door_action_node
+  open_door_action_node
+  drop_object_action_node
+  pick_object_action_node
+  patrolling_controller_node
   ARCHIVE DESTINATION lib
   LIBRARY DESTINATION lib
   RUNTIME DESTINATION lib/${PROJECT_NAME}
