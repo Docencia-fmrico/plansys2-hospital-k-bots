@@ -17,7 +17,7 @@
 #include <vector>
 #include <memory>
 
-#include "plansys2-hospital-k-bots/behavior_tree_nodes/Move.hpp"
+#include "plansys2_hospital/behavior_tree_nodes/Move.hpp"
 
 #include "geometry_msgs/msg/pose2_d.hpp"
 #include "tf2_geometry_msgs/tf2_geometry_msgs.h"

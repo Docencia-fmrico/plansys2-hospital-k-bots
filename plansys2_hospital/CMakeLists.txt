@@ -31,6 +31,7 @@ set(dependencies
     plansys2_bt_actions
 )
 
+include_directories(include)
 add_library(plansys2_move_bt_node SHARED src/behavior_tree_nodes/Move.cpp)
 list(APPEND plugin_libs plansys2_move_bt_node)
 
