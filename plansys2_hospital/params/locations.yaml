@@ -1,9 +1,18 @@
 move_directly:
   ros__parameters:
     plugins:
-      - plansys2_move_bt_node
+      - hospital_move_action_node
     waypoints: ["room1"]
     waypoint_coords:
       room1: [4.62, 0.93, 0.0]
+#
+#move_through:
+#  ros__parameters:
+#    plugins:
+#      - hospital_move_action_node
+#    waypoints: ["room1"]
+#    waypoint_coords:
+#      room1: [4.62, 0.93, 0.0]
+
       
 

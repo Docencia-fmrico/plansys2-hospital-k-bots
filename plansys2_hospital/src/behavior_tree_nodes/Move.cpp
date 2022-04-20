@@ -45,31 +45,32 @@ Move::Move(
     // Do nothing;
   }
 
-  if (node->has_parameter("waypoints")) {
-    std::vector<std::string> wp_names;
+  
 
-    node->get_parameter_or("waypoints", wp_names, {});
+  std::vector<std::string> wp_names;
 
-    for (auto & wp : wp_names) {
-      try {
-        node->declare_parameter("waypoint_coords." + wp);
-      } catch (const rclcpp::exceptions::ParameterAlreadyDeclaredException & e) {
-        // Do nothing;
-      }
+  node->get_parameter_or("waypoints", wp_names, {});
 
-      std::vector<double> coords;
-      if (node->get_parameter_or("waypoint_coords." + wp, coords, {})) {
-        geometry_msgs::msg::Pose2D pose;
-        pose.x = coords[0];
-        pose.y = coords[1];
-        pose.theta = coords[2];
+  for (auto & wp : wp_names) {
+    try {
+      node->declare_parameter("waypoint_coords." + wp);
+    } catch (const rclcpp::exceptions::ParameterAlreadyDeclaredException & e) {
+      // Do nothing;
+    }
+    std::cout << "Punto: " << wp << std::endl;
+    std::vector<double> coords;
+    if (node->get_parameter_or("waypoint_coords." + wp, coords, {})) {
+      geometry_msgs::msg::Pose2D pose;
+      pose.x = coords[0];
+      pose.y = coords[1];
+      pose.theta = coords[2];
 
-        waypoints_[wp] = pose;
-      } else {
-        std::cerr << "No coordinate configured for waypoint [" << wp << "]" << std::endl;
-      }
+      waypoints_[wp] = pose;
+    } else {
+      std::cerr << "No coordinate configured for waypoint [" << wp << "]" << std::endl;
     }
   }
+  
 }
 
 BT::NodeStatus
@@ -83,12 +84,14 @@ Move::on_tick()
     getInput<std::string>("goal", goal);
 
     geometry_msgs::msg::Pose2D pose2nav;
+    pose2nav = waypoints_[goal];
+    std::cout << "POSEEEE:" << pose2nav.x << std::endl;
     if (waypoints_.find(goal) != waypoints_.end()) {
       pose2nav = waypoints_[goal];
     } else {
       std::cerr << "No coordinate for waypoint [" << goal << "]" << std::endl;
     }
-
+    std::cout << "HOLAAAAAAAAAAAAAAAAAa" << std::endl;
     geometry_msgs::msg::PoseStamped goal_pos;
 
     goal_pos.header.frame_id = "map";

@@ -27,7 +27,7 @@ def generate_launch_description():
     # Get the launch directory
     example_dir = get_package_share_directory('plansys2_hospital')
     namespace = LaunchConfiguration('namespace')
-
+    print(namespace)
     declare_namespace_cmd = DeclareLaunchArgument(
         'namespace',
         default_value='',
@@ -57,22 +57,6 @@ def generate_launch_description():
             'action_name': 'move_directly',
             'publisher_port': 1668,
             'server_port': 1669,
-            'bt_xml_file': example_dir + '/behavior_trees_xml/move.xml'
-          }
-        ])
-
-    move_2_cmd = Node(
-        package='plansys2_bt_actions',
-        executable='bt_action_node',
-        name='move_through',
-        namespace=namespace,
-        output='screen',
-        parameters=[
-          example_dir + '/params/locations.yaml',
-          {
-            'action_name': 'move_through',
-            'publisher_port': 1670,
-            'server_port': 1671,
             'bt_xml_file': example_dir + '/behavior_trees_xml/move.xml'
           }
         ])
@@ -116,10 +100,7 @@ def generate_launch_description():
     # Declare the launch options
     ld.add_action(plansys2_cmd)
 
-    #ld.add_action(move_directly_cmd)
-    #ld.add_action(move_through_cmd)
     ld.add_action(move_1_cmd)
-    ld.add_action(move_2_cmd)
     ld.add_action(drop_object_cmd)
     ld.add_action(pick_object_cmd)
     ld.add_action(open_door_cmd)

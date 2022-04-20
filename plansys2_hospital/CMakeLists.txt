@@ -32,8 +32,8 @@ set(dependencies
 )
 
 include_directories(include)
-add_library(plansys2_move_bt_node SHARED src/behavior_tree_nodes/Move.cpp)
-list(APPEND plugin_libs plansys2_move_bt_node)
+add_library(hospital_move_action_node SHARED src/behavior_tree_nodes/Move.cpp)
+list(APPEND plugin_libs hospital_move_action_node)
 
 foreach(bt_plugin ${plugin_libs})
   ament_target_dependencies(${bt_plugin} ${dependencies})
