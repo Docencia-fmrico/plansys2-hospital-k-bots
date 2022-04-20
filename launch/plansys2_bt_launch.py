@@ -44,23 +44,38 @@ def generate_launch_description():
           }.items())
 
     # Specify the actions
-    """
-    move_directly_cmd = Node(
-        package='plansys2_hospital',
-        executable='move_directly_action_node',
-        name='move_directly_action_node',
+    # Specify the actions
+    move_1_cmd = Node(
+        package='plansys2_bt_actions',
+        executable='bt_action_node',
+        name='move_directly',
         namespace=namespace,
         output='screen',
-        parameters=[])
+        parameters=[
+          example_dir + '/params/locations.yaml',
+          {
+            'action_name': 'move_directly',
+            'publisher_port': 1668,
+            'server_port': 1669,
+            'bt_xml_file': example_dir + '/behavior_trees_xml/move.xml'
+          }
+        ])
 
-    move_through_cmd = Node(
-        package='plansys2_hospital',
-        executable='move_through_action_node',
-        name='move_through_action_node',
+    move_2_cmd = Node(
+        package='plansys2_bt_actions',
+        executable='bt_action_node',
+        name='move_through',
         namespace=namespace,
         output='screen',
-        parameters=[])
-    """
+        parameters=[
+          example_dir + '/params/locations.yaml',
+          {
+            'action_name': 'move_through',
+            'publisher_port': 1670,
+            'server_port': 1671,
+            'bt_xml_file': example_dir + '/behavior_trees_xml/move.xml'
+          }
+        ])
 
     drop_object_cmd = Node(
         package='plansys2_hospital',
@@ -103,6 +118,8 @@ def generate_launch_description():
 
     #ld.add_action(move_directly_cmd)
     #ld.add_action(move_through_cmd)
+    ld.add_action(move_1_cmd)
+    ld.add_action(move_2_cmd)
     ld.add_action(drop_object_cmd)
     ld.add_action(pick_object_cmd)
     ld.add_action(open_door_cmd)
