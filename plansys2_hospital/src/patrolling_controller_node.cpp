@@ -26,87 +26,92 @@
 #include "rclcpp_action/rclcpp_action.hpp"
 
 class PatrollingController : public rclcpp::Node {
-   public:
-    PatrollingController()
-        : rclcpp::Node("patrolling_controller"), state_(STARTING) {
+ public:
+  PatrollingController() : rclcpp::Node("patrolling_controller"), state_(STARTING) {}
+
+  void init() {
+    domain_expert_ = std::make_shared<plansys2::DomainExpertClient>();
+    planner_client_ = std::make_shared<plansys2::PlannerClient>();
+    problem_expert_ = std::make_shared<plansys2::ProblemExpertClient>();
+    executor_client_ = std::make_shared<plansys2::ExecutorClient>();
+
+    init_knowledge();
+
+    auto domain = domain_expert_->getDomain();
+    auto problem = problem_expert_->getProblem();
+    auto plan = planner_client_->getPlan(domain, problem);
+
+    if (!plan.has_value()) {
+      std::cout << "Could not find plan to reach goal " <<
+        parser::pddl::toString(problem_expert_->getGoal()) << std::endl;
+      
     }
 
-    void init() {
-        domain_expert_ = std::make_shared<plansys2::DomainExpertClient>();
-        planner_client_ = std::make_shared<plansys2::PlannerClient>();
-        problem_expert_ = std::make_shared<plansys2::ProblemExpertClient>();
-        executor_client_ = std::make_shared<plansys2::ExecutorClient>();
-
-        init_knowledge();
+    if (!executor_client_->start_plan_execution(plan.value())) {
+      RCLCPP_ERROR(get_logger(), "Error starting a new plan (first)");
     }
 
-    void init_knowledge() {
-        problem_expert_->addInstance(plansys2::Instance{"kbot", "robot"});
-        problem_expert_->addInstance(plansys2::Instance{"room1", "room"});
-        problem_expert_->addInstance(plansys2::Instance{"object1", "object"});
-        problem_expert_->addInstance(plansys2::Instance{"gripper1", "gripper"});
+    
+  }
 
-        problem_expert_->addPredicate(plansys2::Predicate("(gripper_at gripper1 kbot)"));
-        problem_expert_->addPredicate(plansys2::Predicate("(gripper_free gripper1)"));
+  void init_knowledge() {
+    problem_expert_->addInstance(plansys2::Instance{"kbot", "robot"});
+    problem_expert_->addInstance(plansys2::Instance{"room1", "room"});
+    problem_expert_->addInstance(plansys2::Instance{"room0", "room"});
 
-        problem_expert_->addPredicate(plansys2::Predicate("(robot_at kbot room1)"));
-        problem_expert_->addPredicate(plansys2::Predicate("(object_at object1 room1)"));
-    }
+    problem_expert_->addInstance(plansys2::Instance{"object1", "object"});
+    problem_expert_->addInstance(plansys2::Instance{"gripper1", "gripper"});
 
-    void step() {
-      if (!ejecutado){
-        // Set the goal for next state
-        problem_expert_->setGoal(plansys2::Goal("(and(robot_carry kbot object1))"));
+    problem_expert_->addPredicate(plansys2::Predicate("(gripper_at gripper1 kbot)"));
+    problem_expert_->addPredicate(plansys2::Predicate("(connected room1 room0)"));
+    problem_expert_->addPredicate(plansys2::Predicate("(connected room0 room1)"));
+    problem_expert_->addPredicate(plansys2::Predicate("(gripper_free gripper1)"));
 
-        // Compute the plan
-        auto domain = domain_expert_->getDomain();
-        auto problem = problem_expert_->getProblem();
-        auto plan = planner_client_->getPlan(domain, problem);
+    problem_expert_->addPredicate(plansys2::Predicate("(robot_at kbot room0)"));
+    problem_expert_->addPredicate(plansys2::Predicate("(object_at object1 room1)"));
 
-        if (!plan.has_value()) {
-            std::cout << "Could not find plan to reach goal " << parser::pddl::toString(problem_expert_->getGoal()) << std::endl;
-        }
+    problem_expert_->setGoal(plansys2::Goal("(and(robot_at kbot room1))"));
+  }
 
-        // Execute the plan
-        if (executor_client_->start_plan_execution(plan.value())) {
-            std::cout << "plan ejecutado" << std::endl;
-            state_ = PATROL_WP1;
-        }
-        ejecutado = true;
+  void step() {
+    if (!executor_client_->execute_and_check_plan()) {  // Plan finished
+      auto result = executor_client_->getResult();
+
+      if (result.value().success) {
+        RCLCPP_INFO(get_logger(), "Plan succesfully finished");
+      } else {
+        RCLCPP_ERROR(get_logger(), "Plan finished with error");
       }
     }
+  }
 
-   private:
-    typedef enum { STARTING,
-                   PATROL_WP1,
-                   PATROL_WP2,
-                   PATROL_WP3,
-                   PATROL_WP4 } StateType;
-    StateType state_;
+ private:
+  typedef enum { STARTING, PATROL_WP1, PATROL_WP2, PATROL_WP3, PATROL_WP4 } StateType;
+  StateType state_;
 
-    std::shared_ptr<plansys2::DomainExpertClient> domain_expert_;
-    std::shared_ptr<plansys2::PlannerClient> planner_client_;
-    std::shared_ptr<plansys2::ProblemExpertClient> problem_expert_;
-    std::shared_ptr<plansys2::ExecutorClient> executor_client_;
+  std::shared_ptr<plansys2::DomainExpertClient> domain_expert_;
+  std::shared_ptr<plansys2::PlannerClient> planner_client_;
+  std::shared_ptr<plansys2::ProblemExpertClient> problem_expert_;
+  std::shared_ptr<plansys2::ExecutorClient> executor_client_;
 
-    bool ejecutado = false;
+  bool ejecutado = false;
 };
 
 int main(int argc, char** argv) {
-    rclcpp::init(argc, argv);
-    auto node = std::make_shared<PatrollingController>();
+  rclcpp::init(argc, argv);
+  auto node = std::make_shared<PatrollingController>();
 
-    node->init();
+  node->init();
 
-    rclcpp::Rate rate(5);
-    while (rclcpp::ok()) {
-        node->step();
+  rclcpp::Rate rate(5);
+  while (rclcpp::ok()) {
+    node->step();
 
-        rate.sleep();
-        rclcpp::spin_some(node->get_node_base_interface());
-    }
+    rate.sleep();
+    rclcpp::spin_some(node->get_node_base_interface());
+  }
 
-    rclcpp::shutdown();
+  rclcpp::shutdown();
 
-    return 0;
+  return 0;
 }

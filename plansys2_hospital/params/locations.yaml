@@ -4,6 +4,6 @@ move_directly:
       - plansys2_move_bt_node
     waypoints: ["room1"]
     waypoint_coords:
-      room1: [1.0, 1.0, 0.0]
+      room1: [4.62, 0.93, 0.0]
       
 
