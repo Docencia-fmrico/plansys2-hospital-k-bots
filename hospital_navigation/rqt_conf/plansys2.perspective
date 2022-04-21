@@ -1,0 +1,172 @@
+{
+  "keys": {},
+  "groups": {
+    "mainwindow": {
+      "keys": {
+        "geometry": {
+          "repr(QByteArray.hex)": "QtCore.QByteArray(b'01d9d0cb00030000000003e00000001b0000077f00000437000003e0000000400000077f0000043700000000000000000780000003e0000000400000077f00000437')",
+          "type": "repr(QByteArray.hex)",
+          "pretty-print": "           7   @   7        @   7"
+        },
+        "state": {
+          "repr(QByteArray.hex)": "QtCore.QByteArray(b'000000ff00000000fd0000000100000003000003a0000003ccfc0100000003fc00000000000002030000011800fffffffc0200000002fb0000007a007200710074005f0070006c0061006e0073007900730032005f006b006e006f0077006c0065006400670065005f005f005200510054004b006e006f0077006c0065006400670065005f005f0031005f005f0052007100740050006c0061006e0073007900730032004b006e006f0077006c00650064006700650100000016000001640000001500fffffffb0000005c007200710074005f0070006c0061006e0073007900730032005f0070006c0061006e005f005f0052005100540050006c0061006e005f005f0031005f005f0052007100740050006c0061006e00730079007300320050006c0061006e0100000180000002620000001500fffffffb00000080007200710074005f0070006c0061006e0073007900730032005f0070006500720066006f0072006d006500720073005f005f0052005100540050006500720066006f0072006d006500720073005f005f0031005f005f0052007100740050006c0061006e00730079007300320050006500720066006f0072006d0065007200730100000209000001970000011900fffffffb00000080007200710074005f0070006c0061006e0073007900730032005f0070006500720066006f0072006d006500720073005f005f0052005100540050006500720066006f0072006d006500720073005f005f0032005f005f0052007100740050006c0061006e00730079007300320050006500720066006f0072006d00650072007301000006120000012e0000000000000000000003a00000000000000004000000040000000800000008fc00000001000000030000000100000036004d0069006e0069006d0069007a006500640044006f0063006b00570069006400670065007400730054006f006f006c0062006100720000000000ffffffff0000000000000000')",
+          "type": "repr(QByteArray.hex)",
+          "pretty-print": "                                                                                              d                                                        b                                                                                                                                                     .                                                            "
+        }
+      },
+      "groups": {
+        "toolbar_areas": {
+          "keys": {
+            "MinimizedDockWidgetsToolbar": {
+              "repr": "8",
+              "type": "repr"
+            }
+          },
+          "groups": {}
+        }
+      }
+    },
+    "pluginmanager": {
+      "keys": {
+        "running-plugins": {
+          "repr": "{'rqt_plansys2_knowledge/RQTKnowledge': [1], 'rqt_plansys2_performers/RQTPerformers': [1], 'rqt_plansys2_plan/RQTPlan': [1]}",
+          "type": "repr"
+        }
+      },
+      "groups": {
+        "plugin__bica_gui__1": {
+          "keys": {},
+          "groups": {
+            "dock_widget__VicodeWidget": {
+              "keys": {
+                "dock_widget_title": {
+                  "repr": "'Form'",
+                  "type": "repr"
+                },
+                "dockable": {
+                  "repr": "'true'",
+                  "type": "repr"
+                },
+                "parent": {
+                  "repr": "None",
+                  "type": "repr"
+                }
+              },
+              "groups": {}
+            }
+          }
+        },
+        "plugin__bica_gui__2": {
+          "keys": {},
+          "groups": {
+            "dock_widget__VicodeWidget": {
+              "keys": {
+                "dock_widget_title": {
+                  "repr": "'Form'",
+                  "type": "repr"
+                },
+                "dockable": {
+                  "repr": "'true'",
+                  "type": "repr"
+                },
+                "parent": {
+                  "repr": "None",
+                  "type": "repr"
+                }
+              },
+              "groups": {}
+            }
+          }
+        },
+        "plugin__rqt_plansys2_knowledge__RQTKnowledge__1": {
+          "keys": {},
+          "groups": {
+            "dock_widget__RqtPlansys2Knowledge": {
+              "keys": {
+                "dock_widget_title": {
+                  "repr": "'RqtPlansys2Knowledge'",
+                  "type": "repr"
+                },
+                "dockable": {
+                  "repr": "True",
+                  "type": "repr"
+                },
+                "parent": {
+                  "repr": "None",
+                  "type": "repr"
+                }
+              },
+              "groups": {}
+            }
+          }
+        },
+        "plugin__rqt_plansys2_performers__RQTPerformers__1": {
+          "keys": {},
+          "groups": {
+            "dock_widget__RqtPlansys2Performers": {
+              "keys": {
+                "dock_widget_title": {
+                  "repr": "'RqtPlansys2Performers'",
+                  "type": "repr"
+                },
+                "dockable": {
+                  "repr": "True",
+                  "type": "repr"
+                },
+                "parent": {
+                  "repr": "None",
+                  "type": "repr"
+                }
+              },
+              "groups": {}
+            }
+          }
+        },
+        "plugin__rqt_plansys2_performers__RQTPerformers__2": {
+          "keys": {},
+          "groups": {
+            "dock_widget__RqtPlansys2Performers": {
+              "keys": {
+                "dock_widget_title": {
+                  "repr": "'RqtPlansys2Performers (2)'",
+                  "type": "repr"
+                },
+                "dockable": {
+                  "repr": "'true'",
+                  "type": "repr"
+                },
+                "parent": {
+                  "repr": "None",
+                  "type": "repr"
+                }
+              },
+              "groups": {}
+            }
+          }
+        },
+        "plugin__rqt_plansys2_plan__RQTPlan__1": {
+          "keys": {},
+          "groups": {
+            "dock_widget__RqtPlansys2Plan": {
+              "keys": {
+                "dock_widget_title": {
+                  "repr": "'RqtPlansys2Plan'",
+                  "type": "repr"
+                },
+                "dockable": {
+                  "repr": "True",
+                  "type": "repr"
+                },
+                "parent": {
+                  "repr": "None",
+                  "type": "repr"
+                }
+              },
+              "groups": {}
+            }
+          }
+        }
+      }
+    }
+  }
+}

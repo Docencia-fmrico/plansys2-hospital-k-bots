@@ -32,8 +32,7 @@ set(dependencies
 )
 
 include_directories(include)
-add_library(hospital_move_action_node SHARED src/behavior_tree_nodes/Move.cpp)
-list(APPEND plugin_libs hospital_move_action_node)
+
 
 foreach(bt_plugin ${plugin_libs})
   ament_target_dependencies(${bt_plugin} ${dependencies})
@@ -55,7 +54,12 @@ ament_target_dependencies(pick_object_action_node ${dependencies})
 add_executable(patrolling_controller_node src/patrolling_controller_node.cpp)
 ament_target_dependencies(patrolling_controller_node ${dependencies})
 
-install(DIRECTORY launch pddl behavior_trees_xml params DESTINATION share/${PROJECT_NAME})
+add_executable(move_action_node src/move_action_node.cpp)
+ament_target_dependencies(move_action_node ${dependencies})
+
+
+
+install(DIRECTORY launch pddl params DESTINATION share/${PROJECT_NAME})
 
 install(TARGETS
   close_door_action_node
@@ -63,6 +67,7 @@ install(TARGETS
   drop_object_action_node
   pick_object_action_node
   patrolling_controller_node
+  move_action_node
   ${plugin_libs}
   ARCHIVE DESTINATION lib
   LIBRARY DESTINATION lib

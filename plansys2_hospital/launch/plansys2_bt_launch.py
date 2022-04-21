@@ -26,6 +26,8 @@ from launch_ros.actions import Node
 def generate_launch_description():
     # Get the launch directory
     example_dir = get_package_share_directory('plansys2_hospital')
+    
+    localization_file = os.path.join(example_dir, 'params/locations.yaml')
     namespace = LaunchConfiguration('namespace')
     print(namespace)
     declare_namespace_cmd = DeclareLaunchArgument(
@@ -45,21 +47,21 @@ def generate_launch_description():
 
     # Specify the actions
     # Specify the actions
-    move_1_cmd = Node(
-        package='plansys2_bt_actions',
-        executable='bt_action_node',
+    # Specify the actions
+    move_cmd = Node(
+        package='plansys2_hospital',
+        executable='move_action_node',
         name='move_directly',
-        namespace=namespace,
         output='screen',
-        parameters=[
-          example_dir + '/params/locations.yaml',
-          {
-            'action_name': 'move_directly',
-            'publisher_port': 1668,
-            'server_port': 1669,
-            'bt_xml_file': example_dir + '/behavior_trees_xml/move.xml'
-          }
-        ])
+        parameters=[{'Action_name': 'move_directly'}, localization_file])
+
+    move_through_cmd = Node(
+        package='plansys2_hospital',
+        executable='move_action_node',
+        name='move_through',
+        output='screen',
+        parameters=[{'Action_name': 'move_through'}, localization_file])
+
 
     drop_object_cmd = Node(
         package='plansys2_hospital',
@@ -100,7 +102,8 @@ def generate_launch_description():
     # Declare the launch options
     ld.add_action(plansys2_cmd)
 
-    ld.add_action(move_1_cmd)
+    ld.add_action(move_cmd)
+    ld.add_action(move_through_cmd)
     ld.add_action(drop_object_cmd)
     ld.add_action(pick_object_cmd)
     ld.add_action(open_door_cmd)

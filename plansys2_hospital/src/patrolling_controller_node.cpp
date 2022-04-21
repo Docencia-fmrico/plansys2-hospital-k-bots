@@ -56,21 +56,28 @@ class PatrollingController : public rclcpp::Node {
 
   void init_knowledge() {
     problem_expert_->addInstance(plansys2::Instance{"kbot", "robot"});
-    problem_expert_->addInstance(plansys2::Instance{"room1", "room"});
-    problem_expert_->addInstance(plansys2::Instance{"room0", "room"});
+    problem_expert_->addInstance(plansys2::Instance{"wp1", "room"});
+    problem_expert_->addInstance(plansys2::Instance{"wp2", "room"});
+    problem_expert_->addInstance(plansys2::Instance{"wp3", "room"});
+    problem_expert_->addInstance(plansys2::Instance{"door1", "door"});
 
     problem_expert_->addInstance(plansys2::Instance{"object1", "object"});
     problem_expert_->addInstance(plansys2::Instance{"gripper1", "gripper"});
 
     problem_expert_->addPredicate(plansys2::Predicate("(gripper_at gripper1 kbot)"));
-    problem_expert_->addPredicate(plansys2::Predicate("(connected room1 room0)"));
-    problem_expert_->addPredicate(plansys2::Predicate("(connected room0 room1)"));
+    problem_expert_->addPredicate(plansys2::Predicate("(connected wp1 wp2)"));
+    problem_expert_->addPredicate(plansys2::Predicate("(connected wp2 wp1)"));
+    problem_expert_->addPredicate(plansys2::Predicate("(connected_through wp2 wp3 door1)"));
+    problem_expert_->addPredicate(plansys2::Predicate("(connected_through wp3 wp2 door1)"));
+    
+    problem_expert_->addPredicate(plansys2::Predicate("(door_closed door1)"));
+
     problem_expert_->addPredicate(plansys2::Predicate("(gripper_free gripper1)"));
 
-    problem_expert_->addPredicate(plansys2::Predicate("(robot_at kbot room0)"));
-    problem_expert_->addPredicate(plansys2::Predicate("(object_at object1 room1)"));
+    problem_expert_->addPredicate(plansys2::Predicate("(robot_at kbot wp1)"));
+    problem_expert_->addPredicate(plansys2::Predicate("(object_at object1 wp1)"));
 
-    problem_expert_->setGoal(plansys2::Goal("(and(robot_at kbot room1))"));
+    problem_expert_->setGoal(plansys2::Goal("(and(robot_at kbot wp3))"));
   }
 
   void step() {

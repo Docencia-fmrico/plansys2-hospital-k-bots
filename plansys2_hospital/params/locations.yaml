@@ -1,18 +1,16 @@
 move_directly:
   ros__parameters:
-    plugins:
-      - hospital_move_action_node
-    waypoints: ["room1"]
-    waypoint_coords:
-      room1: [4.62, 0.93, 0.0]
-#
-#move_through:
-#  ros__parameters:
-#    plugins:
-#      - hospital_move_action_node
-#    waypoints: ["room1"]
-#    waypoint_coords:
-#      room1: [4.62, 0.93, 0.0]
+    waypoints: ["wp1", "wp2", "wp3"]
+    wp1: [4.0, 0.0]
+    wp2: [4.0, 4.0]
+    wp3: [2.0, 7.0]
 
-      
+move_through:
+  ros__parameters:
+    waypoints: ["wp1", "wp2", "wp3"]
+    wp1: [4.0, 0.0]
+    wp2: [4.0, 4.0]
+    wp3: [2.0, 7.0]
+
+
 
