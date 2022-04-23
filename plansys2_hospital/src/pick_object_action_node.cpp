@@ -35,18 +35,17 @@ private:
   void do_work()
   {
     if (progress_ < 1.0) {
-      progress_ += 0.02;
-      send_feedback(progress_, "Move running");
+      progress_ += 0.1;
+      send_feedback(progress_, "Pick Object running");
     } else {
-      finish(true, 1.0, "Move completed");
+      finish(true, 1.0, "Pick Object completed");
 
       progress_ = 0.0;
       std::cout << std::endl;
     }
 
-    std::cout << "\r\e[K" << std::flush;
-    std::cout << "Moving ... [" << std::min(100.0, progress_ * 100.0) << "%]  " <<
-      std::flush;
+    std::cout << "Picking object ... [" << std::min(100.0, progress_ * 100.0) << "%]  " <<
+      std::endl;
   }
 
   float progress_;
