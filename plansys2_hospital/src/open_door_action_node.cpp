@@ -35,7 +35,7 @@ private:
   void do_work()
   {
     if (progress_ < 1.0) {
-      progress_ += 0.2;
+      progress_ += 0.1;
       send_feedback(progress_, "Open door running");
     } else {
       finish(true, 1.0, "Open door completed");

@@ -36,31 +36,16 @@ class PatrollingController : public rclcpp::Node {
     executor_client_ = std::make_shared<plansys2::ExecutorClient>();
 
     init_knowledge();
-
-    auto domain = domain_expert_->getDomain();
-    auto problem = problem_expert_->getProblem();
-    auto plan = planner_client_->getPlan(domain, problem);
-
-    if (!plan.has_value()) {
-      std::cout << "Could not find plan to reach goal " <<
-        parser::pddl::toString(problem_expert_->getGoal()) << std::endl;
-      
-    }
-
-    if (!executor_client_->start_plan_execution(plan.value())) {
-      RCLCPP_ERROR(get_logger(), "Error starting a new plan (first)");
-    }
-
-    
+   
   }
 
   void init_knowledge() {
 
     // Rooms, doors, zones and their connections
     for (int i = 1; i < 19; i++) {
-      std::string room = "room" + to_string(i);
-      std::string door = "door" + to_string(i);
-      std::string zone = "zone" + to_string(i);
+      std::string room = "room" + std::to_string(i);
+      std::string door = "door" + std::to_string(i);
+      std::string zone = "zone" + std::to_string(i);
       problem_expert_->addInstance(plansys2::Instance{room, "room"});
       problem_expert_->addInstance(plansys2::Instance{door, "door"});
       problem_expert_->addInstance(plansys2::Instance{zone, "zone"});
@@ -89,21 +74,21 @@ class PatrollingController : public rclcpp::Node {
     problem_expert_->addInstance(plansys2::Instance{"zone20A", "zone"});
     problem_expert_->addInstance(plansys2::Instance{"zone20B", "zone"});
 
-    problem_expert_->addPredicate(plansys2::Predicate("(connected_through zone19A room19A door19A)"));
-    problem_expert_->addPredicate(plansys2::Predicate("(connected_through room19A zone19A door19A)"));
+    problem_expert_->addPredicate(plansys2::Predicate("(connected_through zone19A room19 door19A)"));
+    problem_expert_->addPredicate(plansys2::Predicate("(connected_through room19 zone19A door19A)"));
 
-    problem_expert_->addPredicate(plansys2::Predicate("(connected_through zone19B room19B door19B)"));
-    problem_expert_->addPredicate(plansys2::Predicate("(connected_through room19B zone19B door19B)"));
+    problem_expert_->addPredicate(plansys2::Predicate("(connected_through zone19B room19 door19B)"));
+    problem_expert_->addPredicate(plansys2::Predicate("(connected_through room19 zone19B door19B)"));
 
-    problem_expert_->addPredicate(plansys2::Predicate("(connected_through zone20A room20A door20A)"));
-    problem_expert_->addPredicate(plansys2::Predicate("(connected_through room20A zone20A door20A)"));
+    problem_expert_->addPredicate(plansys2::Predicate("(connected_through zone20A room20 door20A)"));
+    problem_expert_->addPredicate(plansys2::Predicate("(connected_through room20 zone20A door20A)"));
 
-    problem_expert_->addPredicate(plansys2::Predicate("(connected_through zone20B room20B door20B)"));
-    problem_expert_->addPredicate(plansys2::Predicate("(connected_through room20B zone20B door20B)"));
+    problem_expert_->addPredicate(plansys2::Predicate("(connected_through zone20B room20 door20B)"));
+    problem_expert_->addPredicate(plansys2::Predicate("(connected_through room20 zone20B door20B)"));
 
     // Corridors
     for (int i = 1; i < 10; i++) {
-      std::string corridor = "corridor" + to_string(i);
+      std::string corridor = "corridor" + std::to_string(i);
       problem_expert_->addInstance(plansys2::Instance{corridor, "corridor"});
     }
 
@@ -152,7 +137,7 @@ class PatrollingController : public rclcpp::Node {
 
     // --- Corridor7
     for (int i = 3; i < 11; i++) {
-      std::string zone = "zone" + to_string(i);
+      std::string zone = "zone" + std::to_string(i);
       problem_expert_->addPredicate(plansys2::Predicate("(connected corridor7 "+zone+")"));
       problem_expert_->addPredicate(plansys2::Predicate("(connected "+zone+" corridor7)"));
     }
@@ -163,6 +148,39 @@ class PatrollingController : public rclcpp::Node {
 
     problem_expert_->addPredicate(plansys2::Predicate("(connected corridor9 zone20A)"));
     problem_expert_->addPredicate(plansys2::Predicate("(connected zone20A corridor9)"));
+
+
+    // Between corridors
+    // -- Corridor1
+    problem_expert_->addPredicate(plansys2::Predicate("(connected corridor1 corridor3)"));
+    problem_expert_->addPredicate(plansys2::Predicate("(connected corridor3 corridor1)"));
+    problem_expert_->addPredicate(plansys2::Predicate("(connected corridor1 corridor4)"));
+    problem_expert_->addPredicate(plansys2::Predicate("(connected corridor4 corridor1)"));
+    problem_expert_->addPredicate(plansys2::Predicate("(connected corridor1 corridor5)"));
+    problem_expert_->addPredicate(plansys2::Predicate("(connected corridor5 corridor1)"));
+    problem_expert_->addPredicate(plansys2::Predicate("(connected corridor1 corridor6)"));
+    problem_expert_->addPredicate(plansys2::Predicate("(connected corridor6 corridor1)"));
+    problem_expert_->addPredicate(plansys2::Predicate("(connected corridor1 corridor7)"));
+    problem_expert_->addPredicate(plansys2::Predicate("(connected corridor7 corridor1)"));
+
+    // -- Corridor2
+    problem_expert_->addPredicate(plansys2::Predicate("(connected corridor2 corridor3)"));
+    problem_expert_->addPredicate(plansys2::Predicate("(connected corridor3 corridor2)"));
+    problem_expert_->addPredicate(plansys2::Predicate("(connected corridor2 corridor4)"));
+    problem_expert_->addPredicate(plansys2::Predicate("(connected corridor4 corridor2)"));
+    problem_expert_->addPredicate(plansys2::Predicate("(connected corridor2 corridor5)"));
+    problem_expert_->addPredicate(plansys2::Predicate("(connected corridor5 corridor2)"));
+    problem_expert_->addPredicate(plansys2::Predicate("(connected corridor2 corridor6)"));
+    problem_expert_->addPredicate(plansys2::Predicate("(connected corridor6 corridor2)"));
+    problem_expert_->addPredicate(plansys2::Predicate("(connected corridor2 corridor7)"));
+    problem_expert_->addPredicate(plansys2::Predicate("(connected corridor7 corridor2)"));
+    problem_expert_->addPredicate(plansys2::Predicate("(connected corridor2 corridor9)"));
+    problem_expert_->addPredicate(plansys2::Predicate("(connected corridor9 corridor2)"));
+
+    problem_expert_->addPredicate(plansys2::Predicate("(connected corridor7 corridor8)"));
+    problem_expert_->addPredicate(plansys2::Predicate("(connected corridor8 corridor7)"));
+
+
 
     // Robot, gripper
     problem_expert_->addInstance(plansys2::Instance{"kbot", "robot"});
@@ -206,11 +224,12 @@ class PatrollingController : public rclcpp::Node {
         {
           auto feedback = executor_client_->getFeedBack();
 
+          /*
           for (const auto & action_feedback : feedback.action_execution_status) {
             std::cout << "[" << action_feedback.action << " " <<
               action_feedback.completion * 100.0 << "%]";
           }
-          std::cout << std::endl;
+          std::cout << std::endl;*/
 
           if (!executor_client_->execute_and_check_plan() && executor_client_->getResult()) {
             if (executor_client_->getResult().value().success) {
@@ -266,11 +285,12 @@ class PatrollingController : public rclcpp::Node {
         {
           auto feedback = executor_client_->getFeedBack();
 
+          /*
           for (const auto & action_feedback : feedback.action_execution_status) {
             std::cout << "[" << action_feedback.action << " " <<
               action_feedback.completion * 100.0 << "%]";
           }
-          std::cout << std::endl;
+          std::cout << std::endl;*/
 
           if (!executor_client_->execute_and_check_plan() && executor_client_->getResult()) {
             if (executor_client_->getResult().value().success) {
@@ -326,11 +346,12 @@ class PatrollingController : public rclcpp::Node {
         {
           auto feedback = executor_client_->getFeedBack();
 
+          /*
           for (const auto & action_feedback : feedback.action_execution_status) {
             std::cout << "[" << action_feedback.action << " " <<
               action_feedback.completion * 100.0 << "%]";
           }
-          std::cout << std::endl;
+          std::cout << std::endl;*/
 
           if (!executor_client_->execute_and_check_plan() && executor_client_->getResult()) {
             if (executor_client_->getResult().value().success) {

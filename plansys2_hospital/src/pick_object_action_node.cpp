@@ -44,8 +44,7 @@ private:
       std::cout << std::endl;
     }
 
-    std::cout << "Picking object ... [" << std::min(100.0, progress_ * 100.0) << "%]  " <<
-      std::endl;
+    std::cout << "Picking object ... [" << std::min(100.0, progress_ * 100.0) << "%]  " << std::endl;
   }
 
   float progress_;
