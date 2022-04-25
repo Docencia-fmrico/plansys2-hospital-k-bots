@@ -1,0 +1,6 @@
+. /usr/share/gazebo/setup.bash
+ros2 launch br2_tiago sim.launch.py
+ros2 launch hospital_navigation tiago_navigation.launch.py
+ros2 launch plansys2_hospital simulation_launch.py
+ros2 launch plansys2_hospital plansys2_bt_launch.py
+ros2 run plansys2_hospital patrolling_controller_node
