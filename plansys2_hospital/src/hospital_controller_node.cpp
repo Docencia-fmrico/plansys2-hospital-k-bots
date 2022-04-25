@@ -178,7 +178,6 @@ class PatrollingController : public rclcpp::Node {
         problem_expert_->addPredicate(plansys2::Predicate("(connected corridor6 corridor2)"));
         problem_expert_->addPredicate(plansys2::Predicate("(connected corridor2 corridor9)"));
         problem_expert_->addPredicate(plansys2::Predicate("(connected corridor9 corridor2)"));
-
         problem_expert_->addPredicate(plansys2::Predicate("(connected corridor7 corridor8)"));
         problem_expert_->addPredicate(plansys2::Predicate("(connected corridor8 corridor7)"));
 
@@ -186,15 +185,17 @@ class PatrollingController : public rclcpp::Node {
         problem_expert_->addPredicate(plansys2::Predicate("(connected corridor6 corridor7)"));
         problem_expert_->addPredicate(plansys2::Predicate("(connected corridor7 corridor6)"));
 
-        // Robot, gripper
+        // Robot
         problem_expert_->addInstance(plansys2::Instance{"kbot", "robot"});
+        problem_expert_->addPredicate(plansys2::Predicate("(robot_at kbot corridor6)"));
+
+        // Gripper
         problem_expert_->addInstance(plansys2::Instance{"gripper1", "gripper"});
         problem_expert_->addPredicate(plansys2::Predicate("(gripper_at gripper1 kbot)"));
         problem_expert_->addPredicate(plansys2::Predicate("(gripper_free gripper1)"));
 
-        // object
+        // Object
         problem_expert_->addInstance(plansys2::Instance{"ball", "object"});
-        problem_expert_->addPredicate(plansys2::Predicate("(robot_at kbot corridor6)"));
         problem_expert_->addPredicate(plansys2::Predicate("(object_at ball room3)"));
     }
 
@@ -228,7 +229,6 @@ class PatrollingController : public rclcpp::Node {
                         std::cout << "Successful finished " << std::endl;
 
                         // Set the goal for next state
-
                         std::string room = "room" + std::to_string(counter);
                         problem_expert_->setGoal(plansys2::Goal("(and(robot_at kbot " + room + "))"));
 
@@ -286,6 +286,7 @@ class PatrollingController : public rclcpp::Node {
                         problem_expert_->setGoal(plansys2::Goal("(and(object_at ball " + room + "))"));
 
                         std::cout << "(and(object_at ball " + room + "))" << std::endl;
+
                         // Compute the plan
                         auto domain = domain_expert_->getDomain();
                         auto problem = problem_expert_->getProblem();
@@ -338,6 +339,7 @@ class PatrollingController : public rclcpp::Node {
                         problem_expert_->setGoal(plansys2::Goal("(and(door_closed " + door + "))"));
 
                         std::cout << "(and(door_closed" + door + "))" << std::endl;
+
                         // Compute the plan
                         auto domain = domain_expert_->getDomain();
                         auto problem = problem_expert_->getProblem();
@@ -353,8 +355,8 @@ class PatrollingController : public rclcpp::Node {
                         if (executor_client_->start_plan_execution(plan.value())) {
                             state_ = GO_TO_ROOM;
                             counter++;
-                            if (counter > 20) {
-                                counter = 2;
+                            if (counter > 18) {
+                                counter = 1;
                             }
                         }
                     } else {
@@ -382,8 +384,6 @@ class PatrollingController : public rclcpp::Node {
                     }
                 }
             } break;
-            default:
-                break;
         }
     }
 
