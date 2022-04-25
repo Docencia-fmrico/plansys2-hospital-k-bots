@@ -66,14 +66,14 @@ class MoveAction : public plansys2::ActionExecutorClient {
         auto wp_to_navigate = get_arguments()[2];  // The goal is in the 3rd argument of the action
         RCLCPP_INFO(get_logger(), "Start navigation to [%s]", wp_to_navigate.c_str());
 
+        // Parameters for waypoints
         try {
             this->declare_parameter(wp_to_navigate);
         } catch (const rclcpp::exceptions::ParameterAlreadyDeclaredException& e) {
             // Do nothing;
         }
-        std::vector<double> coords = this->get_parameter(wp_to_navigate).as_double_array();
 
-        std::cout << "Destino " << coords[0] << std::endl;
+        std::vector<double> coords = this->get_parameter(wp_to_navigate).as_double_array();
 
         goal_pos_.pose.position.x = coords[0];
         goal_pos_.pose.position.y = coords[1];
@@ -102,6 +102,8 @@ class MoveAction : public plansys2::ActionExecutorClient {
 
         send_goal_options.result_callback = [this](auto) {
             finish(true, 1.0, "Move completed");
+            RCLCPP_INFO(get_logger(), "Navigation completed");
+            std::cout << std::endl;
         };
 
         future_navigation_goal_handle_ =

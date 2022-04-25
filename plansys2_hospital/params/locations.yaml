@@ -1,4 +1,4 @@
-move_directly:
+move_directly_action_node:
   ros__parameters:
     waypoints: ["room1","room2","room3","room4","room5","room6","room7","room8","room9","room10",
                 "zone1","zone2","zone3","zone4","zone5","zone6","zone7","zone8","zone9","zone10",
@@ -60,7 +60,7 @@ move_directly:
 
 
     
-move_through:
+move_through_action_node:
   ros__parameters:
     waypoints: ["room1","room2","room3","room4","room5","room6","room7","room8","room9","room10",
                 "zone1","zone2","zone3","zone4","zone5","zone6","zone7","zone8","zone9","zone10",

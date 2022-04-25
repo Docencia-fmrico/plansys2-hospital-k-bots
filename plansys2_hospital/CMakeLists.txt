@@ -51,8 +51,8 @@ ament_target_dependencies(drop_object_action_node ${dependencies})
 add_executable(pick_object_action_node src/pick_object_action_node.cpp)
 ament_target_dependencies(pick_object_action_node ${dependencies})
 
-add_executable(patrolling_controller_node src/patrolling_controller_node.cpp)
-ament_target_dependencies(patrolling_controller_node ${dependencies})
+add_executable(hospital_controller_node src/hospital_controller_node.cpp)
+ament_target_dependencies(hospital_controller_node ${dependencies})
 
 add_executable(move_action_node src/move_action_node.cpp)
 ament_target_dependencies(move_action_node ${dependencies})
@@ -66,7 +66,7 @@ install(TARGETS
   open_door_action_node
   drop_object_action_node
   pick_object_action_node
-  patrolling_controller_node
+  hospital_controller_node
   move_action_node
   ${plugin_libs}
   ARCHIVE DESTINATION lib

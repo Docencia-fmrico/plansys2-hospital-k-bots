@@ -51,14 +51,14 @@ def generate_launch_description():
     move_cmd = Node(
         package='plansys2_hospital',
         executable='move_action_node',
-        name='move_directly',
+        name='move_directly_action_node',
         output='screen',
         parameters=[{'Action_name': 'move_directly'}, localization_file])
 
     move_through_cmd = Node(
         package='plansys2_hospital',
         executable='move_action_node',
-        name='move_through',
+        name='move_through_action_node',
         output='screen',
         parameters=[{'Action_name': 'move_through'}, localization_file])
 
